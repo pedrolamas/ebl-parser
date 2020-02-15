@@ -1,4 +1,3 @@
-const upgradeFileIdentifier = Buffer.from([0x1e, 0xf1, 0xee, 0x0b]);
 const assert = require("assert");
 const fs = require("fs");
 const zhc = require("zigbee-herdsman-converters/ota/common");
@@ -24,6 +23,8 @@ imageData.elements.forEach(element => {
 });
 
 function parseEbl(buffer) {
+  assert(buffer.length >= 16, "Not EBL data");
+
   const header = {
     tag: buffer.readUInt16BE(0),
     len: buffer.readUInt16BE(2),
@@ -35,7 +36,7 @@ function parseEbl(buffer) {
 
   assert(
     header.tag === ebltagHeader && header.signature === imageSignature,
-    "Not an EBL file"
+    "Not EBL data"
   );
 
   const data = buffer.slice(16, 4 + header.len);
