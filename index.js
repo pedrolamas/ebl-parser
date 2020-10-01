@@ -5,6 +5,7 @@ const zhc = require("zigbee-herdsman-converters/ota/common");
 const imageSignature = 0xe350;
 
 const ebltagHeader = 0x0;
+const ebltagMetadata = 0xf608;
 const ebltagProg = 0xfe01;
 const ebltagMfgprog = 0x02fe;
 const ebltagEraseprog = 0xfd03;
@@ -31,7 +32,7 @@ function parseEbl(buffer) {
     version: buffer.readUInt16BE(4),
     signature: buffer.readUInt16BE(6),
     flashAddr: buffer.readUInt32BE(8),
-    aatCrc: buffer.readUInt32BE(12)
+    aatCrc: buffer.readUInt32BE(12),
   };
 
   assert(
@@ -58,7 +59,7 @@ function parseEbl(buffer) {
   return {
     header,
     data,
-    elements
+    elements,
   };
 }
 
@@ -74,14 +75,21 @@ function parseEblSubElement(data, position) {
         tag,
         len,
         flashAddr: data.readUInt32BE(position + 4),
-        data: data.slice(position + 8, position + 4 + len)
+        data: data.slice(position + 8, position + 4 + len),
+      };
+
+    case ebltagMetadata:
+      return {
+        tag,
+        len,
+        metadata: data.slice(position + 4, position + 4 + len),
       };
 
     case ebltagEnd:
       return {
         tag,
         len,
-        eblCrc: data.readUInt32BE(position + 4)
+        eblCrc: data.readUInt32BE(position + 4),
       };
 
     default:

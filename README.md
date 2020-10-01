@@ -12,5 +12,5 @@ node.exe index.js <path-to-ota-file>
 
 ## References
 
-- https://github.com/yqyunjie/Zigbee-Project/blob/2bb294718ac2652fc98c5de08fb4bbd417680e1a/firmware/EmberZNet/EM35x/hal/micro/cortexm3/bootloader/ebl.h
+- https://github.com/SiliconLabs/sdk_support/blob/ff45be117a5a1a20d27296628b0632523f65c66a/platform/base/hal/micro/cortexm3/common/ebl.h
 - https://github.com/Koenkk/zigbee-herdsman-converters/blob/bda892b48a/ota/common.js
