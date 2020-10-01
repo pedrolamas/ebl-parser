@@ -35,7 +35,7 @@ imageData.elements.forEach((element) => {
 });
 
 function parseEbl(buffer) {
-  const { size: headerSize, header } = parseEblHeader(buffer);
+  const header = parseEblHeader(buffer);
 
   assert.strictEqual(
     header.signature,
@@ -82,16 +82,13 @@ function parseEblHeader(buffer) {
     const len = buffer.readUInt16BE(2);
 
     return {
-      size,
-      header: {
-        tag,
-        len,
-        version: buffer.readUInt16BE(4),
-        signature: buffer.readUInt16BE(6),
-        flashAddr: buffer.readUInt32BE(8),
-        aatCrc: buffer.readUInt32BE(12),
-        aatBuff: buffer.slice(16, len + 4),
-      },
+      tag,
+      len,
+      version: buffer.readUInt16BE(4),
+      signature: buffer.readUInt16BE(6),
+      flashAddr: buffer.readUInt32BE(8),
+      aatCrc: buffer.readUInt32BE(12),
+      aatBuff: buffer.slice(16, len + 4),
     };
   } else {
     const size = 10;
@@ -106,14 +103,11 @@ function parseEblHeader(buffer) {
     assert.strictEqual(len, 6, "Incorrect EBL encrypted header length");
 
     return {
-      size,
-      header: {
-        tag,
-        len,
-        version: buffer.readUInt16BE(4),
-        encType: buffer.readUInt16BE(6),
-        signature: buffer.readUInt16BE(8),
-      },
+      tag,
+      len,
+      version: buffer.readUInt16BE(4),
+      encType: buffer.readUInt16BE(6),
+      signature: buffer.readUInt16BE(8),
     };
   }
 }
